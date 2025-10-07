@@ -48,7 +48,7 @@ const SuccessModal = ({ showSuccess, setShowSuccess, isDarkMode }) => {
                         transition={{ delay: 0.3 }}
                         className="text-2xl font-medium mb-2"
                     >
-                        Message Sent!
+                        Mensagem enviada!
                     </motion.h3>
 
                     <motion.p
@@ -59,7 +59,7 @@ const SuccessModal = ({ showSuccess, setShowSuccess, isDarkMode }) => {
                             isDarkMode ? "text-gray-400" : "text-gray-600"
                             } mb-6`}
                     >
-                        Thank you for reaching out! I'll get back to you within 24 hours.
+                        Obrigado por entrar em contato! Entrarei em contato com você em até 24 horas.
                     </motion.p>
 
                     <motion.div 
