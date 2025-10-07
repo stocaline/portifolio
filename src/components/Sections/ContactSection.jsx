@@ -13,7 +13,7 @@ import TextInput from "../Input/TextInput";
 import SuccessModal from "../SuccessModal";
 import { PopupModal } from "react-calendly";
 
-const API_URL = import.meta.env.BACK_API_URL;
+const API_URL = import.meta.env.VITE_BACK_API_URL;
 
 const ContactSetion = () => {
     const { isDarkMode } = useTheme();
@@ -24,7 +24,7 @@ const ContactSetion = () => {
     });
     const [showSuccess, setShowSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -47,7 +47,7 @@ const ContactSetion = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true)
-
+        console.log(API_URL)
         try {
             const response = await fetch(`${API_URL}/send-email`, {
                 method: 'POST',
