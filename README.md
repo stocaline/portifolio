@@ -1,12 +1,57 @@
-# React + Vite
+# Portfólio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o meu site de portfólio pessoal construído com React, Tailwind CSS e Vite.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Seção Hero:** Uma breve introdução sobre mim e meu trabalho.
+- **Seção de Habilidades:** Uma lista das minhas habilidades técnicas.
+- **Seção de Projetos:** Uma vitrine dos meus projetos recentes.
+- **Seção Sobre:** Um histórico mais detalhado sobre mim.
+- **Seção de Contato:** Um formulário para entrar em contato comigo.
 
-## Expanding the ESLint configuration
+## Tecnologias Utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+
+## Começando
+
+Para obter uma cópia local em funcionamento, siga estes simples passos de exemplo.
+
+### Pré-requisitos
+
+- npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Instalação
+
+1. Clone o repositório
+   ```sh
+   git clone https://github.com/seu_usuario/Portfolio.git
+   ```
+2. Instale os pacotes NPM
+   ```sh
+   npm install
+   ```
+3. Rode o aplicativo
+   ```sh
+   npm run dev
+   ```
+
+## Screenshots
+
+| Modo Claro | Modo Escuro |
+| --- | --- |
+| ![Modo Claro](https://via.placeholder.com/400x200.png?text=Screenshot+Modo+Claro) | ![Modo Escuro](https://via.placeholder.com/400x200.png?text=Screenshot+Modo+Escuro) |
+
+## Contato
+
+Richard S.B - richardsilvabarbosa.dev@gmail.com
+
+Link do Projeto: [https://github.com/seu_usuario/Portfolio](https://github.com/seu_usuario/Portfolio)
