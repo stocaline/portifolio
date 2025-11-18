@@ -12,6 +12,7 @@ import { useTheme } from "../../context/ThemeContext";
 
 import PROFILE_PIC from "../../assets/images/profile-img1.png";
 import PROFILE_PIC_DARK from "../../assets/images/profile-img3.png";
+import CurriculoPDF from "../../assets/pdfs/curriculo.pdf";
 import { containerVariants, itemVariants } from "../../utils/helper";
 
 const HeroSection = () => {
@@ -24,6 +25,15 @@ const HeroSection = () => {
         if (element) {
             element.scrollIntoView({ behavior: "smooth" });
         }
+    };
+
+    const handleDownload = () => {
+        const link = document.createElement("a");
+        link.href = CurriculoPDF;
+        link.download = "curriculo-richard-bercheli.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     const socialLinks = [
@@ -180,10 +190,10 @@ const HeroSection = () => {
                                 <motion.button
                                     whileHover={{ y: -2 }}
                                     whileTap={{ scale: 0.98 }}
-                                    onClick={() => scrollToSection("work")}
+                                    onClick={handleDownload}
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer"
                                 >
-                                    VER TRABALHOS
+                                    BAIXAR CURRÍCULO
                                 </motion.button>
                                 <motion.button
                                     whileHover={{ y: -2 }}
@@ -302,10 +312,10 @@ const HeroSection = () => {
                                 <motion.button
                                     whileHover={{ y: -2 }}
                                     whileTap={{ scale: 0.98 }}
-                                    onClick={() => scrollToSection("work")}
+                                    onClick={handleDownload}
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer"
                                 >
-                                    VER TRABALHOS
+                                    BAIXAR CURRÍCULO
                                 </motion.button>
                                 <motion.button
                                     whileHover={{ y: -2 }}
