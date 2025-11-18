@@ -24,25 +24,19 @@ const Footer = () => {
         {
             name: "GitHub",
             icon: FiGithub,
-            url: "https://github.com",
+            url: "https://github.com/stocaline",
             color: "hover:text-gray-400"
         },
         {
             name: "LinkedIn",
             icon: FiLinkedin,
-            url: "https://linkedin.com",
+            url: "https://www.linkedin.com/in/richard-de-souza-bercheli/",
             color: "hover:text-blue-400"
-        },
-        {
-            name: "Twitter",
-            icon: FiTwitter,
-            url: "https://twitter.com",
-            color: "hover:text-sky-400"
         },
         {
             name: "Email",
             icon: Mail,
-            url: "mailto:richard@exemple.com",
+            url: "malito:richardbercheli@gmail.com",
             color: "hover:text-green-400"
         },
     ];
@@ -189,7 +183,7 @@ const Footer = () => {
                         {/* Copyright */}
                         <motion.div variants={itemVariants} className="space-y-2">
                             <p className={`text-sm ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}>
-                                © {new Date().getFullYear()} Richard S.B. All rights reserved
+                                © {new Date().getFullYear()} Richard S.B. Todos os direitos reservados.
                             </p>
                             <p className={`text-xs ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`}>
                                 Construido com Vite & Framer Motion • Design com atenção
@@ -200,7 +194,7 @@ const Footer = () => {
                         <motion.div variants={itemVariants}>
                             <motion.button
                                 onClick={scrollToTop}
-                                className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                                className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
                                     isDarkMode
                                         ? "bg-gray-800/50 hover:bg-gray-700/50 text-gray-400 hover:text-white"
                                         : "bg-gray-100/50 hover:bg-gray-200/50 text-gray-600 hover:text-gray-900"

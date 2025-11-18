@@ -46,6 +46,13 @@ const AboutSection = () => {
         },
     };
 
+    const scrollToSection = (SectionId) => {
+        const element = document.getElementById(SectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <section
             id="about"
@@ -110,8 +117,8 @@ const AboutSection = () => {
                                 className={`text-lg leading-relaxed mb-6 ${isDarkMode ? "text-gray-300" : "text-gray-700"
                                     }`}
                             >
-                                Acredito que a tecnologia deve ser uma ponte que conecta pessoas e resolve problemas reais. 
-                                Minha paixão é criar experiências digitais que não sejam apenas funcionais, 
+                                Acredito que a tecnologia deve ser uma ponte que conecta pessoas e resolve problemas reais.
+                                Minha paixão é criar experiências digitais que não sejam apenas funcionais,
                                 mas também encantadoras e acessíveis para todos.
                             </p>
                             <p
@@ -119,7 +126,7 @@ const AboutSection = () => {
                                     }`}
                             >
                                 Quando não estou programando, você pode me encontrar explorando novos frameworks,
-                                contribuindo com projetos de código aberto ou mentorando desenvolvedores iniciantes. 
+                                contribuindo com projetos de código aberto ou mentorando desenvolvedores iniciantes.
                                 Adoro a constante evolução das tecnologias web e as infinitas possibilidades que elas
                                 trazem para criar experiências digitais de valor.
                             </p>
@@ -214,16 +221,16 @@ const AboutSection = () => {
                                     {/* Content */}
                                     <div
                                         className={`flex-grow p-6 rounded-xl boder transition-all duration-300 ${isDarkMode
-                                                ? "bg-gray-800/50 border-gray-700 group-hover:border-gray-600 group-hover:bg-gray-800/70"
-                                                : "bg-white/80 border-gray-200 group-hover:border-gray-300 group-hover:bg-white "
+                                            ? "bg-gray-800/50 border-gray-700 group-hover:border-gray-600 group-hover:bg-gray-800/70"
+                                            : "bg-white/80 border-gray-200 group-hover:border-gray-300 group-hover:bg-white "
                                             } backdrop-blur-sm`}
                                     >
-                                        <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center justify-between gap-4 mb-2">
                                             <h4 className="text-xl font-medium">{step.title}</h4>
                                             <span
-                                                className={`text-sm px-3 py-1 rounded-full ${isDarkMode
-                                                        ? "bg-gray-700 text-gray-300"
-                                                        : "bg-gray-100 text-gray-700"
+                                                className={`text-sm flex-shrink-0 px-3 py-1 rounded-full ${isDarkMode
+                                                    ? "bg-gray-700 text-gray-300"
+                                                    : "bg-gray-100 text-gray-700"
                                                     }`}
                                             >
                                                 {step.year}
@@ -269,7 +276,8 @@ const AboutSection = () => {
                         <motion.button
                             whileHover={{ y: -2, scale: 1.05 }}
                             whileTap={{ scale: 0.98 }}
-                            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300"
+                            onClick={() => scrollToSection("contact")}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer"
                         >
                             Vamos Trabalhar Juntos
                         </motion.button>

@@ -67,7 +67,7 @@ const Navbar = () => {
                         key={item.id}
                         whileHover={{ y: -2 }}
                         onClick={() => scrollToSection(item.id)}
-                        className={`text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}
+                        className={`text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"} cursor-pointer`}
                     >
                         {item.text}
                     </motion.button>
@@ -76,7 +76,7 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => toggleDarkMode(isDarkMode ? "light" : "dark")}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"}`}
+                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
                 >
                     {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                 </motion.button>
@@ -88,7 +88,7 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => toggleDarkMode(isDarkMode ? "light" : "dark")}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"}`}
+                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
                 >
                     {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                 </motion.button>
@@ -96,7 +96,7 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"}`}
+                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
                 >
                     {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </motion.button>
@@ -118,7 +118,7 @@ const Navbar = () => {
                             key={item.id}
                             whileHover={{ x: 5 }}
                             onClick={() => scrollToSection(item.id)}
-                            className={`block w-full text-left py-2 text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}
+                            className={`block w-full text-left py-2 text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"} cursor-pointer`}
                         >
                             {item.text}
                         </motion.button>
