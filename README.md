@@ -33,7 +33,7 @@ Para obter uma cópia local em funcionamento, siga estes simples passos de exemp
 
 1. Clone o repositório
    ```sh
-   git clone https://github.com/seu_usuario/Portfolio.git
+   git clone https://github.com/stocaline/portifolio
    ```
 2. Instale os pacotes NPM
    ```sh
@@ -48,10 +48,10 @@ Para obter uma cópia local em funcionamento, siga estes simples passos de exemp
 
 | Modo Claro | Modo Escuro |
 | --- | --- |
-| ![Modo Claro](https://via.placeholder.com/400x200.png?text=Screenshot+Modo+Claro) | ![Modo Escuro](https://via.placeholder.com/400x200.png?text=Screenshot+Modo+Escuro) |
+| ![Modo Claro](https://github.com/stocaline/portifolio/blob/master/src/assets/images/thumb-modo-claro.png) | ![Modo Escuro](https://github.com/stocaline/portifolio/blob/master/src/assets/images/thumb-modo-escuro.png) |
 
 ## Contato
 
-Richard S.B - richardsilvabarbosa.dev@gmail.com
+Richard S.B - richardbercheli@gmail.com
 
-Link do Projeto: [https://github.com/seu_usuario/Portfolio](https://github.com/seu_usuario/Portfolio)
+Link do Projeto: [https://github.com/stocaline/portifolio](https://github.com/stocaline/portifolio)
