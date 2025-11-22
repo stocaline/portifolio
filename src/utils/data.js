@@ -183,7 +183,7 @@ export const PROJECTS = [
         description: "Uma pokedex interativa para visualizar pokemons",
         image: PROJECT_IMG_3,
         tags: ["HTML", "CSS", "API"],
-        liveUrl: "https://pokedex-eight-phi.vercel.app/",
+        liveUrl: "https://project-showcase-eosin.vercel.app/?id=pokedex-web-app",
         githubUrl: "https://github.com/stocaline/pokedex",
         featured: true,
         category: "Frontend",
