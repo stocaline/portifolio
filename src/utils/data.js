@@ -19,42 +19,42 @@ import {
 } from "lucide-react";
 
 import {
-  FaAngular,
-  FaBootstrap,
-  FaCss3Alt,
-  FaFacebook,
-  FaHtml5,
-  FaJs,
-  FaNodeJs,
-  FaReact,
-  FaSass
+    FaAngular,
+    FaBootstrap,
+    FaCss3Alt,
+    FaFacebook,
+    FaHtml5,
+    FaJs,
+    FaNodeJs,
+    FaReact,
+    FaSass
 } from "react-icons/fa";
 import { MdOutlineSettingsApplications } from "react-icons/md";
 import {
-  SiC,
-  SiCplusplus,
-  SiExpress,
-  SiFigma,
-  SiFirebase,
-  SiGit,
-  SiGithub,
-  SiJavascript,
-  SiMongodb,
-  SiMysql,
-  SiNetlify,
-  SiPostgresql,
-  SiPostman,
-  SiRedux,
-  SiSpring,
-  SiTypescript,
-  SiVercel,
-  SiSupabase
+    SiC,
+    SiCplusplus,
+    SiExpress,
+    SiFigma,
+    SiFirebase,
+    SiGit,
+    SiGithub,
+    SiJavascript,
+    SiMongodb,
+    SiMysql,
+    SiNetlify,
+    SiPostgresql,
+    SiPostman,
+    SiRedux,
+    SiSpring,
+    SiTypescript,
+    SiVercel,
+    SiSupabase
 } from "react-icons/si";
 import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri";
 import {
-  GiMaterialsScience,
-  GiNorthStarShuriken,
-  GiSandsOfTime,
+    GiMaterialsScience,
+    GiNorthStarShuriken,
+    GiSandsOfTime,
 } from "react-icons/gi";
 import { DiJava, DiPython, DiVisualstudio } from "react-icons/di";
 import { TbBrandCSharp } from "react-icons/tb";
@@ -79,17 +79,17 @@ export const SKILLS_CATEGORY = [
         skills: [
             { name: "HTML", icon: FaHtml5, classname: "text-orange-500" },
             { name: "CSS", icon: FaCss3Alt, clasname: "text-blue-500" },
-            { name: "SASS", icon: FaSass, classname:"text-pink-400" },
-            { name: "JavaScript", icon: FaJs, classname:"text-yellow-400"  },
-            { name: "React JS", icon: FaReact, classname:"text-cyan-400"  },
+            { name: "SASS", icon: FaSass, classname: "text-pink-400" },
+            { name: "JavaScript", icon: FaJs, classname: "text-yellow-400" },
+            { name: "React JS", icon: FaReact, classname: "text-cyan-400" },
             // { name: "Angular", icon: FaAngular, classname:"text-red-500" },
-            { name: "Redux", icon: SiRedux, classname:"text-purple-500" },
-            { name: "Next JS", icon: RiNextjsFill, classname:"text-black" },
-            { name: "Tailwind CSS", icon: RiTailwindCssFill, classname:"text-teal-400" },
-            { name: "GSAP", icon: MdOutlineSettingsApplications, classname:"text-green-500" },
-            { name: "Material UI", icon: GiMaterialsScience, classname:"text-blue-400" },
-            { name: "Bootstrap", icon: FaBootstrap, classname:"text-purple-600" },
-            { name: "Bubble", image: BUBBLE_ICON, classname:"text-purple-600" }
+            { name: "Redux", icon: SiRedux, classname: "text-purple-500" },
+            { name: "Next JS", icon: RiNextjsFill, classname: "text-black" },
+            { name: "Tailwind CSS", icon: RiTailwindCssFill, classname: "text-teal-400" },
+            { name: "GSAP", icon: MdOutlineSettingsApplications, classname: "text-green-500" },
+            { name: "Material UI", icon: GiMaterialsScience, classname: "text-blue-400" },
+            { name: "Bootstrap", icon: FaBootstrap, classname: "text-purple-600" },
+            { name: "Bubble", image: BUBBLE_ICON, classname: "text-purple-600" }
         ],
     },
     {
@@ -97,15 +97,15 @@ export const SKILLS_CATEGORY = [
         icon: Server,
         desc: "Criando aplicações server-side robustas e escalaveis",
         skills: [
-            { name: "Spring Boot", icon: SiSpring, classname:"text-green-600" },
-            { name: "Node JS", icon: FaNodeJs, classname:"text-green-400" },
-            { name: "Express JS", icon: SiExpress, classname:"text-gray-300" },
-            { name: "MySQL", icon: SiMysql, classname:"text-blue-400" },
-            { name: "MongoDB", icon: SiMongodb, classname:"text-green-500" },
-            { name: "Firebase", icon: SiFirebase, classname:"text-yellow-500" },
-            { name: "PostgreSQL", icon: SiPostgresql, classname:"text-sky-500" },
-            { name: "Supabase", icon: SiSupabase, classname:"text-green-600" },
-            { name: "Bubble", image: BUBBLE_ICON, classname:"text-purple-600" }
+            { name: "Spring Boot", icon: SiSpring, classname: "text-green-600" },
+            { name: "Node JS", icon: FaNodeJs, classname: "text-green-400" },
+            { name: "Express JS", icon: SiExpress, classname: "text-gray-300" },
+            { name: "MySQL", icon: SiMysql, classname: "text-blue-400" },
+            { name: "MongoDB", icon: SiMongodb, classname: "text-green-500" },
+            { name: "Firebase", icon: SiFirebase, classname: "text-yellow-500" },
+            { name: "PostgreSQL", icon: SiPostgresql, classname: "text-sky-500" },
+            { name: "Supabase", icon: SiSupabase, classname: "text-green-600" },
+            { name: "Bubble", image: BUBBLE_ICON, classname: "text-purple-600" }
         ]
     },
     {
@@ -116,10 +116,10 @@ export const SKILLS_CATEGORY = [
             // { name: "C", icon: SiC, classname:"text-blue-400" },
             // { name: "C++", icon: SiCplusplus, classname:"text-blue-500" },
             // { name: "C#", icon: TbBrandCSharp, classname:"text-purple-400" },
-            { name: "Java", icon: DiJava, classname:"text-red-600" },
-            { name: "Python", icon: DiPython, classname:"text-yellow-400" },
-            { name: "JavaScript", icon: SiJavascript, classname:"text-yellow-400" },
-            { name: "TypeScript", icon: SiTypescript, classname:"text-blue-400" },
+            { name: "Java", icon: DiJava, classname: "text-red-600" },
+            { name: "Python", icon: DiPython, classname: "text-yellow-400" },
+            { name: "JavaScript", icon: SiJavascript, classname: "text-yellow-400" },
+            { name: "TypeScript", icon: SiTypescript, classname: "text-blue-400" },
         ]
     },
     {
@@ -127,13 +127,13 @@ export const SKILLS_CATEGORY = [
         icon: BookOpen,
         desc: "Otimizando processos e organizando todo o trabalho feito",
         skills: [
-            { name: "Git", icon: SiGit, classname:"text-orange-500" },
-            { name: "GitHub", icon: SiGithub, classname:"text-white" },
-            { name: "VS Code", icon: DiVisualstudio, classname:"text-blue-500" },
-            { name: "Postman", icon: SiPostman, classname:"text-orange-400" },
-            { name: "Vercel", icon: SiVercel, classname:"text-black" },
+            { name: "Git", icon: SiGit, classname: "text-orange-500" },
+            { name: "GitHub", icon: SiGithub, classname: "text-white" },
+            { name: "VS Code", icon: DiVisualstudio, classname: "text-blue-500" },
+            { name: "Postman", icon: SiPostman, classname: "text-orange-400" },
+            { name: "Vercel", icon: SiVercel, classname: "text-black" },
             // { name: "Netlify", icon: SiNetlify, classname:"text-teal-400" },
-            { name: "Figma", icon: SiFigma, classname:"text-pink-500" },
+            { name: "Figma", icon: SiFigma, classname: "text-pink-500" },
         ]
     }
 ]
@@ -161,7 +161,7 @@ export const PROJECTS = [
         description: "Organização imediata sem barreiras. Crie listas de tarefas de forma rápida e intuitiva.",
         image: PROJECT_IMG_1,
         tags: ["Vite", "Tailwind", "typescript", "API", "JSON"],
-        liveUrl: "https://project-showcase-eosin.vercel.app/?id=lister-zero-friction",
+        liveUrl: "https://lister-landingpage.vercel.app/",
         githubUrl: "https://github.com/stocaline/lister",
         featured: true,
         category: "Full Stack",
@@ -217,17 +217,17 @@ export const JOURNEY_STEPS = [
     },
     {
         year: "2023 - 2024",
-        title: "Desenvolvedor Jr",
+        title: "Engenheiro de Software Jr",
         company: "Innoscience",
-        description: "Como desenvolvedor júnior, minhas responsabilidades evoluíram para incluir o desenvolvimento de novas funcionalidades, além do suporte e manutenção contínua dos sistemas.",
+        description: "Como engenheiro de software júnior, minhas responsabilidades evoluíram para incluir o desenvolvimento de novas funcionalidades, além do suporte e manutenção contínua dos sistemas.",
         icon: Briefcase,
         color: "bg-orange-500",
     },
     {
         year: "2024 - 2025",
-        title: "Desenvolvedor Pleno",
+        title: "Engenheiro de Software Pleno",
         company: "Innoscience",
-        description: "Assumi maior autonomia e responsabilidade no desenvolvimento de soluções complexas, mentoria de novos desenvolvedores e participação ativa nas decisões de arquitetura.",
+        description: "Assumi maior autonomia e responsabilidade no design e implementação de soluções complexas, mentoria de engenheiros juniores e participação ativa nas decisões de arquitetura de sistemas.",
         icon: Rocket,
         color: "bg-purple-500",
     }

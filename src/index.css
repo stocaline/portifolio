@@ -1,17 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+/* ── Fonts ───────────────────────────────────────────────────────── */
+/* Syne (headings) + DM Sans (body) loaded via index.html */
+
+/* ── Tailwind ────────────────────────────────────────────────────── */
 @import "tailwindcss";
 
-@theme {
-  --font-display: 'Urbanist', sans-serif;
+/* ── Global Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+::selection { background: rgba(59,130,246,0.3); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.4); border-radius: 2px; }
+
+/* ── CSS Variables ───────────────────────────────────────────────── */
+:root {
+  --accent: #3b82f6;
 }
 
-@layer base {
-  html {
-    font-family: var(--font-display);
-  }
+/* ── Scroll Progress Bar ─────────────────────────────────────────── */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  width: 100%;
+}
 
-  body {
-    background-color: #000000;
-    overflow-x: hidden;
-  }
+/* ── Custom Cursor ───────────────────────────────────────────────── */
+#cursor-dot {
+  position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
+}
+#cursor-ring {
+  position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+  border: 1.5px solid var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+  opacity: 0.5; transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 52px; height: 52px; opacity: 0.8; }
+
+/* ── Keyframes ───────────────────────────────────────────────────── */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spinReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes pulse { 0%,100% { opacity:0.1; transform: scale(1); } 50% { opacity:0.2; transform: scale(1.1); } }
+@keyframes floatBadge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes grain {
+  0%,100% { transform: translate(0,0); } 20% { transform: translate(-2%,-3%); }
+  40% { transform: translate(3%,-1%); } 60% { transform: translate(-1%,2%); }
+  80% { transform: translate(2%,3%); }
+}
+@keyframes orbital-ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* ── Orbital Timeline — shadcn CSS var overrides ─────────────────── */
+/* Applied inside the black orbital canvas */
+#skills .bg-black { background-color: #000; }
+#skills .bg-card { background-color: rgba(0,0,0,0.9); }
+#skills .text-card-foreground { color: #f9fafb; }
+#skills .border { border-color: rgba(255,255,255,0.12); }
+
+/* ── Grain Overlay ───────────────────────────────────────────────── */
+.grain-overlay {
+  position: fixed; inset: -100px; pointer-events: none; z-index: 1000; opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(1) infinite;
+}
+
+/* ── Button Styles ───────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: white; border: none; padding: 14px 32px; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; cursor: none;
+  transition: box-shadow 0.25s ease; text-decoration: none; position: relative; overflow: hidden;
+  background: var(--accent);
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.15);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+  border-radius: 100px;
+}
+.btn-primary:hover::after { transform: scaleX(1); }
+.btn-primary:hover { box-shadow: 0 8px 28px rgba(59,130,246,0.4); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; cursor: none;
+  padding: 14px 32px; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+/* ── Skill Chip ──────────────────────────────────────────────────── */
+.skill-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 100px;
+  font-size: 13px; font-weight: 500; cursor: none;
+  transition: all 0.2s ease;
+}
+
+/* ── Nav Link ────────────────────────────────────────────────────── */
+.nav-link {
+  position: relative; text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: color 0.2s ease; cursor: none;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1.5px;
+  background: var(--accent); transition: width 0.25s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ── Project Card ────────────────────────────────────────────────── */
+.project-card { transition: box-shadow 0.3s ease; transform-style: preserve-3d; }
+.social-btn { transition: all 0.2s ease; }
+
+/* ── GSAP Hidden (initial state) ─────────────────────────────────── */
+.gsap-hidden { opacity: 0; }
+
+/* ── Word Split (hero animation) ─────────────────────────────────── */
+.word-wrap { overflow: hidden; display: inline-block; }
+.word { display: inline-block; }
+
+/* ── Animation helpers ───────────────────────────────────────────── */
+.float-badge { animation: floatBadge 3s ease-in-out infinite; }
+.spin-ring { animation: spin 20s linear infinite; }
+.spin-ring-reverse { animation: spinReverse 25s linear infinite; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) { .desktop-nav { display: none !important; } }
+@media (max-width: 768px) {
+  section { padding-left: 24px !important; padding-right: 24px !important; }
+  body { cursor: auto; }
+  #cursor-dot, #cursor-ring { display: none; }
 }

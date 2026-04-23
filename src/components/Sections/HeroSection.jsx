@@ -1,481 +1,243 @@
-import {
-    motion,
-    useScroll,
-    useTransform,
-} from "framer-motion";
-import {
-    ArrowDown,
-    Mail,
-} from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Mail, Download } from "lucide-react";
 import { FiGithub, FiLinkedin } from "react-icons/fi";
 import { useTheme } from "../../context/ThemeContext";
-
 import PROFILE_PIC from "../../assets/images/profile-img1.png";
 import PROFILE_PIC_DARK from "../../assets/images/profile-img3.png";
-import CurriculoPDF from "../../assets/pdfs/curriculo.pdf";
-import { containerVariants, itemVariants } from "../../utils/helper";
+import CURRICULO_PDF from "../../assets/pdfs/curriculo.pdf";
+import { gsap } from "gsap";
 
 const HeroSection = () => {
     const { isDarkMode } = useTheme();
-    const { scrollY } = useScroll();
-    const heroY = useTransform(scrollY, [0, 500], [0, -100]);
+    const sectionRef = useRef(null);
+    const tlRef = useRef(null);
 
-    const scrollToSection = (SectionId) => {
-        const element = document.getElementById(SectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
+    const accent = "var(--accent)";
+    const bg = isDarkMode ? "#030712" : "#f9fafb";
+    const text = isDarkMode ? "#f9fafb" : "#111827";
+    const sub = isDarkMode ? "#9ca3af" : "#6b7280";
+    const imgSrc = isDarkMode ? PROFILE_PIC_DARK : PROFILE_PIC;
+
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const handleDownload = () => {
-        const link = document.createElement("a");
-        link.href = CurriculoPDF;
-        link.download = "curriculo-richard-bercheli.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
+    // Social links
     const socialLinks = [
-        { icon: FiGithub, href: "https://github.com/stocaline" },
-        { icon: FiLinkedin, href: "https://www.linkedin.com/in/richard-de-souza-bercheli/" },
-        { icon: Mail, href: "mailto:richardbercheli@gmail.com" },
-    ]
+        { icon: <FiGithub size={18} />, href: "https://github.com/stocaline", label: "GitHub" },
+        { icon: <FiLinkedin size={18} />, href: "https://www.linkedin.com/in/richard-de-souza-bercheli/", label: "LinkedIn" },
+        { icon: <Mail size={18} />, href: "mailto:richardbercheli@gmail.com", label: "Email" },
+    ];
 
-    const textVariant = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            tracksition: {
-                duration: 0.6,
-                ease: "easeOut",
-            }
-        },
-    };
+    useEffect(() => {
+        // GSAP entrance animation
+        const tl = gsap.timeline({ delay: 0.15 });
+        tl.fromTo(".hero-eyebrow", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" })
+            .fromTo(".hero-word", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power3.out" }, "-=0.3")
+            .fromTo(".hero-desc", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.3")
+            .fromTo(".hero-ctas", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.3")
+            .fromTo(".hero-social", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.3")
+            .fromTo(".hero-image", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 0.2)
+            .fromTo(".hero-scroll-indicator", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.2");
 
-    const imageVariant = {
-        hidden: { opacity: 0, x: 50 },
-        visible: {
-            x: 0,
-            opacity: 1,
-            tracksition: {
-                duration: 1,
-                ease: "easeOut",
-                delay: 0.5,
-            }
-        },
-    };
+        tlRef.current = tl;
+        return () => tl.kill();
+    }, []);
 
-    const commonImageClasses = "absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out";
-
+    const titleLines = [
+        { text: "Construindo", highlight: false },
+        { text: "experiências", highlight: true },
+        { text: "que importam.", highlight: false },
+    ];
 
     return (
-        <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"}`}>
-            {/* Hero Section */}
-            <motion.section
-                id="home"
-                style={{ y: heroY }}
-                className="min-h-screen flex items-center justify-center relative px-6 pt-10"
+        <section
+            id="home"
+            ref={sectionRef}
+            style={{
+                minHeight: "100vh",
+                background: bg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                padding: "80px 40px 60px",
+                overflow: "hidden"
+            }}
+        >
+            {/* Parallax blobs */}
+            <div style={{
+                position: "absolute", top: "10%", right: "10%",
+                width: 500, height: 500, borderRadius: "50%",
+                background: accent, opacity: 0.07, filter: "blur(90px)",
+                animation: "pulse 8s ease-in-out infinite", willChange: "transform"
+            }} />
+            <div style={{
+                position: "absolute", bottom: "15%", left: "5%",
+                width: 350, height: 350, borderRadius: "50%",
+                background: "#a855f7", opacity: 0.06, filter: "blur(80px)",
+                animation: "pulse 10s 2s ease-in-out infinite", willChange: "transform"
+            }} />
+
+            <div style={{
+                maxWidth: 1200, margin: "0 auto", width: "100%",
+                display: "grid", gridTemplateColumns: "1fr auto",
+                gap: 80, alignItems: "center", position: "relative", zIndex: 1
+            }}>
+                {/* Left content */}
+                <div>
+                    <div className="hero-eyebrow" style={{
+                        fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase",
+                        color: accent, fontWeight: 600, marginBottom: 24
+                    }}>
+                        Engenheiro de Software
+                    </div>
+
+                    {/* Word-split title */}
+                    <h1 style={{
+                        fontFamily: "'Syne', sans-serif",
+                        fontSize: "clamp(42px, 6vw, 80px)",
+                        fontWeight: 700, lineHeight: 1.05,
+                        color: text, marginBottom: 28
+                    }}>
+                        {titleLines.map((line, li) => (
+                            <span key={li} style={{ display: "block" }}>
+                                {line.text.split(" ").map((word, wi) => (
+                                    <span key={wi} className="word-wrap" style={{ marginRight: "0.25em" }}>
+                                        <span
+                                            className="hero-word"
+                                            style={{ color: line.highlight ? accent : "inherit" }}
+                                        >
+                                            {word}
+                                        </span>
+                                    </span>
+                                ))}
+                            </span>
+                        ))}
+                    </h1>
+
+                    <p className="hero-desc" style={{
+                        fontSize: 18, lineHeight: 1.7, color: sub,
+                        maxWidth: 500, marginBottom: 40, fontWeight: 300
+                    }}>
+                        Projeto e construo sistemas de software robustos — do levantamento de requisitos ao deploy em produção — com foco em qualidade, escalabilidade e experiência do usuário.
+                    </p>
+
+                    <div className="hero-ctas" style={{ display: "flex", gap: 16, marginBottom: 48, flexWrap: "wrap" }}>
+                        <a
+                            href={CURRICULO_PDF}
+                            download="Richard_Bercheli_CV.pdf"
+                            className="btn-primary"
+                            style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}
+                        >
+                            <Download size={16} />
+                            Baixar CV
+                        </a>
+                        <button
+                            onClick={() => scrollToSection("contact")}
+                            className="btn-secondary"
+                            style={{
+                                border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"}`,
+                                color: text
+                            }}
+                        >
+                            Entrar em Contato
+                        </button>
+                    </div>
+
+                    <div className="hero-social" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                        {socialLinks.map((s) => (
+                            <a
+                                key={s.label}
+                                href={s.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="social-btn"
+                                style={{
+                                    width: 44, height: 44, borderRadius: "50%",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    background: isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
+                                    color: sub, textDecoration: "none", transition: "all 0.25s ease"
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = "var(--accent)";
+                                    e.currentTarget.style.color = "white";
+                                    e.currentTarget.style.transform = "translateY(-4px) scale(1.1)";
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+                                    e.currentTarget.style.color = sub;
+                                    e.currentTarget.style.transform = "none";
+                                }}
+                            >
+                                {s.icon}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Profile image */}
+                <div className="hero-image" style={{ position: "relative" }}>
+                    <div style={{ position: "relative", width: 320, height: 400 }}>
+                        <div style={{
+                            position: "absolute", inset: -16, borderRadius: 28,
+                            border: "1px solid rgba(59,130,246,0.13)",
+                            animation: "spin 20s linear infinite"
+                        }} />
+                        <div style={{
+                            position: "absolute", inset: -32, borderRadius: 36,
+                            border: "1px solid rgba(168,85,247,0.1)",
+                            animation: "spinReverse 25s linear infinite"
+                        }} />
+                        <img
+                            src={imgSrc}
+                            alt="Richard Bercheli"
+                            style={{
+                                width: "100%", height: "100%", objectFit: "cover",
+                                borderRadius: 20,
+                                border: `3px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`
+                            }}
+                        />
+                        {/* Available badge */}
+                        <div style={{
+                            position: "absolute", bottom: -20, left: -20,
+                            background: isDarkMode ? "#1f2937" : "white",
+                            borderRadius: 16, padding: "12px 20px",
+                            boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                            display: "flex", alignItems: "center", gap: 10,
+                            animation: "floatBadge 3s ease-in-out infinite"
+                        }}>
+                            <div style={{
+                                width: 10, height: 10, borderRadius: "50%",
+                                background: "#22c55e", boxShadow: "0 0 10px #22c55e"
+                            }} />
+                            <span style={{ fontSize: 13, fontWeight: 600, color: isDarkMode ? "#f9fafb" : "#111827" }}>
+                                Disponível para projetos
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div
+                className="hero-scroll-indicator"
+                style={{
+                    position: "absolute", bottom: 32, left: "50%",
+                    transform: "translateX(-50%)", color: sub, cursor: "none",
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 8
+                }}
+                onClick={() => scrollToSection("about")}
             >
-                <div className="absolute inset-0 overflow-hidden">
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 180, 360],
-                        }}
-                        transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                        className={`absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl opacity-10 ${isDarkMode ? "bg-blue-500" : "bg-blue-400"}`}
-                    />
-                    <motion.div
-                        animate={{
-                            scale: [1.1, 1.1, 1.1],
-                            rotate: [360, 180, 0],
-                        }}
-                        transition={{
-                            duration: 25,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                        className={`absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl opacity-10 ${isDarkMode ? "bg-purple-500" : "bg-purple-400"}`}
-                    />
-
-                </div>
-
-                <div className="max-w-7xl mx-auto w-full z-10 mt-20">
-                    {/* Mobile Layout */}
-                    <div className="block lg:hidden">
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            variants={containerVariants}
-                            className="text-center"
-                        >
-                            {/* Profile Image */}
-                            <motion.div variants={imageVariant} className="mb-8">
-                                <div className="w-32 h-32 mx-auto relative">
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        className={`w-full h-32 rounded-2xl overflow-hidden border-4 ${isDarkMode ? "border-gray-800" : "border-gray-300"} shadow-2xl`}
-                                    >
-                                        <div className="relative w-full h-full">
-                                            {/* Imagem do Modo Claro */}
-                                            <img
-                                                src={PROFILE_PIC}
-                                                alt="Profile Light Mode"
-                                                className={`
-                                                ${commonImageClasses}
-                                                ${isDarkMode ? 'opacity-0' : 'opacity-100'}
-                                            `}
-                                            />
-                                            {/* Imagem do Modo Escuro */}
-                                            <img
-                                                src={PROFILE_PIC_DARK}
-                                                alt="Profile Dark Mode"
-                                                className={`
-                                                ${commonImageClasses}
-                                                ${isDarkMode ? 'opacity-100' : 'opacity-0'}
-                                            `}
-                                            />
-                                        </div>
-                                    </motion.div>
-                                    {/* Decorative ring */}
-                                    <motion.div
-                                        animate={{ rotate: 360 }}
-                                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                        className={`absolute -inset-2 rounded-2xl border border-blue-500/20`}
-                                    />
-                                </div>
-                            </motion.div>
-                            {/* Content - Mobile */}
-                            <motion.div
-                                variants={textVariant}
-                                className={`text-sm uppercase tracking-widest ${isDarkMode ? "text-gray-500" : "text-gray-600"} mb-4`}
-                            >
-                                Desenvolvedor Full Stack
-                            </motion.div>
-
-                            <motion.h1
-                                variants={itemVariants}
-                                className="text-3xl md:text-5xl font-light mb-6 leading-tight"
-                            >
-                                <span className={`${isDarkMode ? "text-white" : "text-gray-900"}`}>
-                                    Construindo
-                                </span>
-                                <span className="text-blue-500 font-medium ml-2">
-                                    experiências
-                                </span>
-                                <br />
-                                <span className={isDarkMode ? "text-white" : "text-gray-900"}>
-                                    digitais que fazem a diferença.
-                                </span>
-                            </motion.h1>
-
-                            <motion.p
-                                variants={itemVariants}
-                                className={`text-base md:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-600"} mb-8 max-w-xl mx-auto font-light leading-relaxed`}
-                            >
-                                Criando soluções web fluidas com React, Node.js e mais.
-                            </motion.p>
-
-                            {/* CTA buttons - Mobile */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
-                            >
-                                <motion.button
-                                    whileHover={{ y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={handleDownload}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer"
-                                >
-                                    BAIXAR CURRÍCULO
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => scrollToSection("contact")}
-                                    className={`border ${isDarkMode ? "border-gray-700 hover:border-gray-600 text-gray-300" : "border-gray-300 hover:border-gray-400 text-gray-700"} px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer`}
-                                >
-                                    ENTRE EM CONTATO
-                                </motion.button>
-                            </motion.div>
-
-                            {/* Social Links - Mobile */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="flex justify-center space-x-6 mb-8"
-                            >
-                                {socialLinks.map((social, index) => (
-                                    <motion.a
-                                        key={index}
-                                        href={social.href}
-                                        whileHover={{ y: -3, scale: 1.1 }}
-                                        className={`p-3 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"}`}
-                                    >
-                                        <social.icon size={20} />
-                                    </motion.a>
-                                ))}
-                            </motion.div>
-
-                            {/* Tech Stack - Mobile */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="flex justify-center items-center space-x-6 text-xs uppercase tracking-widest flex-wrap"
-                            >
-                                <span
-                                    className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                >
-                                    IA
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-700" : "text-gray-400"}
-                                >
-                                    •
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                >
-                                    Node.js
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-700" : "text-gray-400"}
-                                >
-                                    •
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                >
-                                    N8N
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-700" : "text-gray-400"}
-                                >
-                                    •
-                                </span>
-                                <span
-                                    className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                >
-                                    Bubble
-                                </span>
-                            </motion.div>
-                        </motion.div>
-                    </div>
-
-                    {/* Desktop Layout */}
-                    <div className="hidden lg:grid grid-cols-2 lg-gap-16 lg:items-center">
-                        {/* Left Column - Content */}
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            variants={containerVariants}
-                            className="text-left"
-                        >
-                            <motion.div
-                                variants={textVariant}
-                                className={`text-sm uppercase tracking-widest ${isDarkMode ? "text-gray-500" : "text-gray-600"} mb-6`}
-                            >
-                                Desenvolvedor Full Stack
-                            </motion.div>
-
-                            <motion.h1
-                                variants={itemVariants}
-                                className="text-5xl md:text-7xl font-light mb-8 leading-tight"
-                            >
-                                <span className={`${isDarkMode ? "text-white" : "text-gray-900"}`}>
-                                    Construindo
-                                </span>
-                                <br />
-                                <span className="text-blue-500 font-medium">experiências</span>
-                                <br />
-                                <span className={isDarkMode ? "text-white" : "text-gray-900"}>
-                                    digitais que fazem a diferença.
-                                </span>
-                            </motion.h1>
-
-                            <motion.p
-                                variants={itemVariants}
-                                className={`text-xl ${isDarkMode ? "text-gray-400" : "text-gray-600"} mb-12 font-light leading-relaxed max-w-lg`}
-                            >
-                                Desenvolvo aplicações web funcionais e elegantes, utilizando tecnologias modernas e focando em uma experiência de usuário cuidadosa.
-                            </motion.p>
-
-                            {/* CTA Buttons - Desktop */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="flex gap-6 mb-8"
-                            >
-                                <motion.button
-                                    whileHover={{ y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={handleDownload}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer"
-                                >
-                                    BAIXAR CURRÍCULO
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => scrollToSection("contact")}
-                                    className={`border ${isDarkMode
-                                        ? "border-gray-700 hover:border-gray-600 text-gray-300"
-                                        : "border-gray-300 hover:border-gray-400 text-gray-700"
-                                        } px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 cursor-pointer`}
-                                >
-                                    ENTRE EM CONTATO
-                                </motion.button>
-                            </motion.div>
-
-                            {/* Social Links - Desktop */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="flex space-x-6 mb-12"
-                            >
-                                {socialLinks.map((social, index) => (
-                                <motion.a
-                                    key={index}
-                                    href={social.href}
-                                    whileHover={{ y: -3, scale: 1.1 }}
-                                    className={`p-3 rounded-full transition-colors ${isDarkMode
-                                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"}
-                                    `}
-                                >
-                                    <social.icon size={20} />
-                                </motion.a>
-                                ))}
-                            </motion.div>
-
-                        </motion.div>
-
-                        {/* Right Column - Profile Image */}
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            variants={imageVariant}
-                            className="flex item justify-center lg:justify-end"
-                        >
-                            <div className="relative">
-                                {/* Tech Stack - Desktop */}
-                                <motion.div
-                                    variants={itemVariants}
-                                    className="flex items-center space-x-8 text-xs uppercase tracking-widest absolute -top-16 -left-20"
-                                >
-                                    <span
-                                        className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                    >
-                                        Node.js
-                                    </span>
-                                    <span
-                                        className={`text-2xl ${isDarkMode ? "text-gray-700" : "text-gray-400"}`}
-                                    >
-                                        •
-                                    </span>
-                                    <span
-                                        className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                    >
-                                        Bubble
-                                    </span>
-                                    <span
-                                        className={`text-2xl ${isDarkMode ? "text-gray-700" : "text-gray-400"}`}
-                                    >
-                                        •
-                                    </span>
-                                    <span
-                                        className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                    >
-                                        N8N
-                                    </span>
-                                    <span
-                                        className={`text-2xl ${isDarkMode ? "text-gray-700" : "text-gray-400"}`}
-                                    >
-                                        •
-                                    </span>
-                                    <span
-                                        className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                    >
-                                        Next.js
-                                    </span>
-                                    <span
-                                        className={`text-2xl ${isDarkMode ? "text-gray-700" : "text-gray-400"}`}
-                                    >
-                                        •
-                                    </span>
-                                    <span
-                                        className={isDarkMode ? "text-gray-600" : "text-gray-500"}
-                                    >
-                                        IA
-                                    </span>
-                                </motion.div>
-
-                                <motion.div
-                                    whileHover={{ scale: 1.05 }}
-                                    className={`w-80 h-96 rounded-3xl overflow-hidden border-4 ${isDarkMode
-                                        ? "border-gray-800"
-                                        : "border-gray-300"} shadow-2xl`}
-                                >
-                                    <div className="relative w-full h-full">
-                                        {/* Imagem do Modo Claro */}
-                                        <img
-                                            src={PROFILE_PIC}
-                                            alt="Profile Light Mode"
-                                            className={`
-                                                ${commonImageClasses}
-                                                ${isDarkMode ? 'opacity-0' : 'opacity-100'}
-                                            `}
-                                        />
-                                        {/* Imagem do Modo Escuro */}
-                                        <img
-                                            src={PROFILE_PIC_DARK}
-                                            alt="Profile Dark Mode"
-                                            className={`
-                                                ${commonImageClasses}
-                                                ${isDarkMode ? 'opacity-100' : 'opacity-0'}
-                                            `}
-                                        />
-                                    </div>
-                                </motion.div>
-                                {/* Decorative elements */}
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                    className="absolute -inset-4 rounded-3xl border border-blue-500/20"
-                                />
-                                <motion.div
-                                    animate={{ rotate: -360 }}
-                                    transition={{
-                                        duration: 20,
-                                        repeat: Infinity,
-                                        ease: "linear"
-                                    }}
-                                    className="absolute -inset-8 rounded-3xl border border-purple-500/10"
-                                />
-
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-
-                {/* Scroll Indicator */}
-                <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-                >
-                    <ArrowDown
-                        size={20}
-                        className={`${isDarkMode ? "text-gray-600" : "text-gray-400"}`}
-                    />
-
-                </motion.div>
-
-            </motion.section>
-        </div>
+                <span style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 500 }}>
+                    Scroll
+                </span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+            </div>
+        </section>
     );
-}
+};
 
 export default HeroSection;

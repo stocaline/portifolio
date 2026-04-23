@@ -1,226 +1,266 @@
-import { useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ClipboardList, Palette, Code2, FlaskConical, Rocket } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
-import { SKILLS_CATEGORY, STATS, TECH_STACK } from "../../utils/data";
-import { containerVariants, itemVariants } from "../../utils/helper";
+import RadialOrbitalTimeline from "../ui/radial-orbital-timeline";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const SOFTWARE_PROCESS = [
+    {
+        id: 1,
+        title: "Planejamento",
+        date: "Fase 01",
+        content: "Antes de qualquer linha de código, mapeio o problema real. Conduzo sessões de descoberta com stakeholders, defino o escopo com precisão cirúrgica e identifico riscos antecipadamente — transformando incerteza em um roadmap claro e executável.",
+        category: "Processo",
+        icon: ClipboardList,
+        relatedIds: [5, 2],
+        status: "completed",
+        energy: 100,
+        mindset: "Outcome-Driven",
+        deliverables: [
+            "Documento de Requisitos (BRD/PRD)",
+            "Mapa de User Stories priorizado",
+            "Estimativas e cronograma de entregas",
+        ],
+    },
+    {
+        id: 2,
+        title: "Design",
+        date: "Fase 02",
+        content: "Prototipo antes de construir. Valido ideias com wireframes rápidos e evoluo para protótipos de alta fidelidade no Figma, garantindo que a solução faça sentido para o usuário antes de qualquer investimento técnico.",
+        category: "Processo",
+        icon: Palette,
+        relatedIds: [1, 3],
+        status: "completed",
+        energy: 80,
+        mindset: "User-First",
+        deliverables: [
+            "Wireframes e protótipos navigáveis (Figma)",
+            "Sistema de design com tokens e componentes",
+            "Fluxos validados com usuários reais",
+        ],
+    },
+    {
+        id: 3,
+        title: "Desenvolvimento",
+        date: "Fase 03",
+        content: "Construo com arquitetura pensada para escalar. Priorizo código limpo, componentização reutilizável e integrações robustas — garantindo que o produto seja mantível hoje e pronto para crescer amanhã.",
+        category: "Processo",
+        icon: Code2,
+        relatedIds: [2, 4],
+        status: "in-progress",
+        energy: 95,
+        mindset: "Clean Code",
+        deliverables: [
+            "Código-fonte versionado e documentado (Git)",
+            "APIs integradas e testadas",
+            "CI/CD configurado e Pull Requests revisados",
+        ],
+    },
+    {
+        id: 4,
+        title: "Testes",
+        date: "Fase 04",
+        content: "Qualidade não é opcional. Implemento estratégias de teste em múltiplas camadas — unitários, integração e E2E — e conduzo auditorias de performance e acessibilidade, garantindo que o que vai para produção realmente funciona.",
+        category: "Processo",
+        icon: FlaskConical,
+        relatedIds: [3, 5],
+        status: "in-progress",
+        energy: 20,
+        mindset: "Zero Bugs",
+        deliverables: [
+            "Suíte de testes automatizados (unitários e E2E)",
+            "Relatório de bugs corrigidos e cobertura de código",
+            "Audit Lighthouse: performance e acessibilidade",
+        ],
+    },
+    {
+        id: 5,
+        title: "Lançamento",
+        date: "Fase 05",
+        content: "Deploy não é o fim — é o começo. Configuro pipelines de CI/CD, monitoro métricas críticas no pós-lançamento e estruturo ciclos de feedback para garantir que o produto evolua com inteligência.",
+        category: "Processo",
+        icon: Rocket,
+        relatedIds: [4, 1],
+        status: "pending",
+        energy: 10,
+        mindset: "Ship It",
+        deliverables: [
+            "Deploy automatizado em produção (CI/CD)",
+            "Dashboard de monitoramento e alertas",
+            "Relatório de métricas e plano de iteração",
+        ],
+    },
+];
 
 const SkillSection = () => {
     const { isDarkMode } = useTheme();
-    const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"]
-    });
+    // DOM refs
+    const wrapperRef  = useRef(null); // scroll-space wrapper (tall, 300vh)
+    const stickyRef   = useRef(null); // sticky viewport panel
+    const headerRef   = useRef(null); // title block that fades out
+    const orbitalRef  = useRef(null); // orbital that fades in
 
-    const y = useTransform(scrollYProgress, [0, 1], ["100%", "-100%"]);
+    const accent = "var(--accent)";
+    const bg     = isDarkMode ? "#030712" : "#f9fafb";
+    const text   = isDarkMode ? "#f9fafb" : "#111827";
+    const sub    = isDarkMode ? "#9ca3af" : "#6b7280";
 
-    const skillBarVariants = {
-        hidden: { width: 0, opacity: 0 },
-        visible: (level) => ({
-            width: `${level}%`,
-            opacity: 1,
-            transition: {
-                duration: 1.5,
-                ease: "easeOut",
-                delay: 0.3
-            }
-        })
-    };
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // ── 1. Header entrance (before pinning starts) ────────────────
+            gsap.fromTo(
+                ".proc-eyebrow, .proc-title, .proc-desc",
+                { autoAlpha: 0, y: 30 },
+                {
+                    autoAlpha: 1, y: 0,
+                    duration: 0.7, ease: "power3.out",
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: wrapperRef.current,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                    }
+                }
+            );
+
+            // ── 2. Scroll-scrubbed reveal: header fades → orbital fades in ─
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: wrapperRef.current,
+                    start: "top top",      // pin starts when section hits viewport top
+                    end: "+=100%",         // pin lasts for 1 full viewport-height of scroll
+                    pin: stickyRef.current,
+                    scrub: 1,
+                    anticipatePin: 1,
+                }
+            });
+
+            // Phase 1 (0 → 0.4): header exits upward
+            tl.to(headerRef.current, {
+                autoAlpha: 0,
+                y: -60,
+                ease: "power2.in",
+                duration: 0.4,
+            });
+
+            // Phase 2 (0.4 → 1): orbital enters
+            tl.fromTo(
+                orbitalRef.current,
+                { autoAlpha: 0, scale: 0.92 },
+                { autoAlpha: 1, scale: 1, ease: "power2.out", duration: 0.6 },
+                "<+0.1" // tiny overlap so transition is snappy
+            );
+        }, wrapperRef);
+
+        return () => ctx.revert();
+    }, []);
 
     return (
-        <section
-            ref={sectionRef}
+        /*
+         * Outer wrapper: tall so it creates scroll distance.
+         * The sticky child fills the viewport and stays fixed during the pin.
+         */
+        <div
             id="skills"
-            className={`py-24 px-6 ${isDarkMode
-                    ? "bg-gray-950 text-white"
-                    : "bg-gray-50 text-gray-900"
-                } relative overflow-hidden`}
+            ref={wrapperRef}
+            style={{ background: bg, position: "relative" }}
         >
-            {/* Background Elements */}
-            <motion.div
-                style={{ y }}
-                className="absolute inset-0 overflow-hidden"
+            {/* Sticky viewport panel */}
+            <div
+                ref={stickyRef}
+                style={{
+                    width: "100%",
+                    height: "100vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                    overflow: "hidden",
+                    background: bg,
+                }}
             >
+                {/* ── Header layer ── */}
                 <div
-                    className={`absolute top-40 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-5 ${isDarkMode
-                            ? "bg-blue-500"
-                            : "bg-blue-400"
-                        }`}
-                />
+                    ref={headerRef}
+                    style={{
+                        position: "absolute",
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center",
+                        padding: "0 clamp(24px, 5vw, 80px)",
+                        pointerEvents: "none",
+                    }}
+                >
+                    <div
+                        className="proc-eyebrow"
+                        style={{
+                            fontSize: 12, letterSpacing: "0.22em",
+                            textTransform: "uppercase",
+                            color: accent, fontWeight: 600, marginBottom: 20,
+                            fontFamily: "'DM Sans', sans-serif",
+                        }}
+                    >
+                        Como trabalho
+                    </div>
+
+                    <h2
+                        className="proc-title"
+                        style={{
+                            fontFamily: "'Syne', sans-serif",
+                            fontSize: "clamp(40px, 6vw, 80px)",
+                            fontWeight: 700, color: text,
+                            lineHeight: 1.05, marginBottom: 24,
+                            letterSpacing: "-0.02em",
+                            maxWidth: 800,
+                        }}
+                    >
+                        Processo de{" "}
+                        <span style={{ color: accent }}>Software</span>
+                    </h2>
+
+                    <p
+                        className="proc-desc"
+                        style={{
+                            fontSize: "clamp(15px, 1.5vw, 18px)",
+                            color: sub, fontWeight: 300,
+                            maxWidth: 560, lineHeight: 1.7,
+                            fontFamily: "'DM Sans', sans-serif",
+                        }}
+                    >
+                        Cada projeto segue um fluxo estruturado — do levantamento de requisitos até o lançamento em produção.{" "}
+                        <em style={{ color: accent, fontStyle: "normal", fontWeight: 500 }}>
+                            Role para explorar.
+                        </em>
+                    </p>
+                </div>
+
+                {/* ── Orbital layer (starts invisible) ── */}
                 <div
-                    className={`absolute bottom-40 left-1/4 w-64 h-64 rounded-full blur-3xl opacity-5 ${isDarkMode
-                            ? "bg-purple-500"
-                            : "bg-purple-400"
-                        }`}
-                />
-            </motion.div>
-
-            <div className="max-w-6xl mx-auto relative z-10">
-                {/* Section Header */}
-                <motion.div
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    variants={containerVariants}
-                    className="text-center mb-20"
+                    ref={orbitalRef}
+                    style={{
+                        width: "100%", height: "100%",
+                        opacity: 0, pointerEvents: "auto",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
                 >
-                    <motion.div
-                        variants={itemVariants}
-                        className={`text-center ${isDarkMode
-                                ? "text-gray-500"
-                                : "text-gray-600"
-                            } mb-4`}
-                    >
-                        Competências Técnicas
-                    </motion.div>
-
-                    <motion.h2
-                        variants={itemVariants}
-                        className="text-3xl md:text-5xl font-light mb-6"
-                    >
-                        Habilidades &
-                        <span className="text-blue-500 font-medium"> Tecnologias</span>
-                    </motion.h2>
-
-                    <motion.p
-                        variants={itemVariants}
-                        className={`text-lg ${isDarkMode
-                                ? "text-gray-400"
-                                : "text-gray-600"
-                            } max-w-2xl mx-auto font-light`}
-                    >
-                        Desenvolvimento completo de aplicações web modernas e escaláveis, da ideia à implantação.
-                    </motion.p>
-                </motion.div>
-
-                {/* Skills Grid */}
-                <motion.div
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    variants={containerVariants}
-                    className="grid md:grid-cols-2 gap-8 lg:gap-12"
-                >
-                    {SKILLS_CATEGORY.map((category, index) => (
-                        <div
-                            key={category.title}
-                            variants={itemVariants}
-                            className={`mb-12 p-6 rounded-lg shadow-lg ${isDarkMode
-                                    ? "bg-gray-900/50 border-gray-800 backdrop-blur-sm"
-                                    : "bg-white/80 border-gray-200 backdrop-blur-sm"
-                                }`}
-                        >
-                            {/* Category Header */}
-                            <div className="flex items-center mb-6">
-                                <div className={`p-3 rounded-xl ${isDarkMode
-                                        ? "bg-gray-800"
-                                        : "bg-gray-100"
-                                    } mr-4`}
-                                >
-                                    <category.icon size={24} className="text-blue-500" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-medium mb-1"> {category.title} </h3>
-                                    <p
-                                        className={`text-sm ${isDarkMode
-                                                ? "text-gray-400"
-                                                : "text-gray-600"
-                                            }`}
-                                    >
-                                        {category.desc}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Skills List */}
-                            <div className="flex flex-wrap gap-4">
-                                {category.skills.map((skill, skillIndex) => (
-                                    <motion.div
-                                        key={skillIndex}
-                                        whileHover={{
-                                            scale: 1.05,
-                                            rotateY: 5,
-                                            boxShadow: "0px 0px 5px #2b7fff"
-                                        }}
-                                        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                                        className={`group flex items-center gap-2 px-3 py-2 rounded-lg ${isDarkMode ? "bg-amber-50/10" : "bg-gray-100"} `}
-                                    >
-                                        <span className="text-xl">
-                                            {
-                                                skill.icon
-                                                    ? <skill.icon className={skill.classname} />
-                                                    : <img src={skill.image} alt={skill.desc} className="w-4 h-4" />
-                                            }
-                                            
-                                        </span>
-                                        <span className={`text-sm ${isDarkMode ? "text-white" : "text-gray-600"} `}>{skill.name}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </motion.div>
-
-                {/* Additional Skill */}
-                <motion.div
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    variants={containerVariants}
-                    className="mt-16"
-                >
-                    <motion.div variants={itemVariants} className="text-center mb-8">
-                        <h3 className="text-xl font-medium mb-4">LLms que utilizo no dia a dia</h3>
-                    </motion.div>
-
-                    <motion.div
-                        variants={itemVariants}
-                        className="flex flex-wrap justify-center gap-3"
-                    >
-                        {TECH_STACK.map((tech, index) => (
-                            <motion.span
-                                key={tech}
-                                whileHover={{ y: -2, scale: 1.05 }}
-                                className={`px-4 py-2 text-sm rounded-full border transition-all duration-300 ${isDarkMode
-                                        ? "bg-gray-900 border-gray-700 text-gray-300 hover:border-gray-600"
-                                        : "bg-white border-gray-300 text-gray-700 hover:border-gray-400"
-                                    }`}
-                            >
-                                {tech}
-                            </motion.span>
-                        ))}
-                    </motion.div>
-                </motion.div>
-
-                {/* Stats */}
-                <motion.div
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    variants={containerVariants}
-                    className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
-                >
-                    {STATS.map((stat, index) => (
-                        <motion.div
-                            key={stat.label}
-                            variants={itemVariants}
-                            className="text-center"
-                        >
-                            <div className="text-2xl md:text-3xl font-light text-blue-500 mb-2">
-                                {stat.number}
-                            </div>
-
-                            <div
-                                className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"
-                                    }`}
-                            >
-                                {stat.label}
-                            </div>
-                        </motion.div>
-                    ))}
-                </motion.div>
+                    <RadialOrbitalTimeline
+                        timelineData={SOFTWARE_PROCESS}
+                        isDarkMode={isDarkMode}
+                        effortLabel="Esforço necessário"
+                        fullHeight
+                    />
+                </div>
             </div>
-
-        </section>
+        </div>
     );
-}
+};
 
 export default SkillSection;

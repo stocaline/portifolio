@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext();
 
+const ACCENT = "#3b82f6";
+
 export const ThemeProvider = ({ children }) => {
     const [isDarkMode, toggleDarkMode] = useState(
         localStorage.getItem("theme") || "light"
@@ -17,6 +19,11 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem("theme", isDarkMode);
     }, [isDarkMode]);
 
+    // Sync --accent CSS var
+    useEffect(() => {
+        document.documentElement.style.setProperty("--accent", ACCENT);
+    }, []);
+
     return (
         <ThemeContext.Provider value={{ isDarkMode: isDarkMode === "dark", toggleDarkMode }}>
             {children}
@@ -24,4 +31,4 @@ export const ThemeProvider = ({ children }) => {
     );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext);

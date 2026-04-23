@@ -1,132 +1,149 @@
-import React from "react";
-import { useState } from "react";
-import {
-    motion,
-    useScroll,
-    AnimatePresence,
-} from "framer-motion";
-import {
-    Code2,
-    Sun,
-    Moon,
-    Menu,
-    X
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
-
-import LOGO from "../assets/images/logo.png"
+import LOGO from "../assets/images/logo.png";
 
 const Navbar = () => {
     const { isDarkMode, toggleDarkMode } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const fn = () => setScrolled(window.scrollY > 40);
+        window.addEventListener("scroll", fn, { passive: true });
+        return () => window.removeEventListener("scroll", fn);
+    }, []);
 
     const menuItems = [
-        {
-            id: "home",
-            text: "inicio"
-        },
-        {
-            id: "about",
-            text: "Sobre"
-        },
-        {
-            id: "work",
-            text: "Projetos"
-        },
-        {
-            id: "contact",
-            text: "Contato"
-        }
-    ]
+        { id: "home", text: "Início" },
+        { id: "about", text: "Sobre" },
+        { id: "skills", text: "Skills" },
+        { id: "projects", text: "Projetos" },
+        { id: "contact", text: "Contato" },
+    ];
 
     const scrollToSection = (sectionId) => {
-        const element = document.getElementById(sectionId)
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-            setIsMenuOpen(false);
-        }
-    }
-    return <motion.nav
-        style={{ opacity: 1 }}
-        className={`fixed top-0 w-full z-50 px-6 py-4 ${isDarkMode ? "bg-gray-950/80" : "bg-gray-50/80"} backdrop-blur-md border-b ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}
-    >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-2"
-            >
-                {/* <Code2 size={24} className="text-blue-500" />{" "} */}
-                <img src={LOGO} alt="" className={`w-8`}/>{" "}
-                <span className={`text-lg ml-1 ${isDarkMode ? "text-white" : ""}`}>Richard de Souza Bercheli</span>
-            </motion.div>
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+        setIsMenuOpen(false);
+    };
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-                {menuItems.map((item) => (
-                    <motion.button
-                        key={item.id}
-                        whileHover={{ y: -2 }}
-                        onClick={() => scrollToSection(item.id)}
-                        className={`text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"} cursor-pointer`}
-                    >
-                        {item.text}
-                    </motion.button>
-                ))}
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => toggleDarkMode(isDarkMode ? "light" : "dark")}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
-                >
-                    {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-                </motion.button>
-            </div>
+    const navBg = isDarkMode
+        ? scrolled ? "rgba(3,7,18,0.9)" : "transparent"
+        : scrolled ? "rgba(249,250,251,0.9)" : "transparent";
+    const textColor = isDarkMode ? "#e5e7eb" : "#374151";
+    const borderColor = isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center space-x-4">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => toggleDarkMode(isDarkMode ? "light" : "dark")}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
-                >
-                    {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-                </motion.button>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className={`p-2 rounded-full transition-colors ${isDarkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"} cursor-pointer`}
-                >
-                    {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                </motion.button>
-            </div>
+    return (
+        <nav style={{
+            position: "fixed", top: 0, left: 0, right: 0, zIndex: 500,
+            background: navBg,
+            backdropFilter: scrolled ? "blur(20px)" : "none",
+            borderBottom: scrolled ? `1px solid ${borderColor}` : "none",
+            transition: "all 0.4s ease",
+            padding: "12px 40px",
+            fontFamily: "'DM Sans', sans-serif"
+        }}>
+            <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                {/* Logo */}
+                <div style={{ cursor: "none" }} onClick={() => scrollToSection("home")}>
+                    <img
+                        src={LOGO}
+                        alt="RSB"
+                        style={{
+                            width: 36, height: 36, objectFit: "contain"
+                        }}
+                    />
+                </div>
 
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-            {isMenuOpen && (
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className={`md:hidden mt-4 p-4 rounded-lg ${isDarkMode ? "bg-gray-900" : "bg-white"} border ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}
-                >
+                {/* Desktop Nav */}
+                <div className="desktop-nav" style={{ display: "flex", gap: 40, alignItems: "center" }}>
                     {menuItems.map((item) => (
-                        <motion.button
+                        <button
                             key={item.id}
-                            whileHover={{ x: 5 }}
                             onClick={() => scrollToSection(item.id)}
-                            className={`block w-full text-left py-2 text-sm uppercase tracking-wider transition-colors ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-gray-900"} cursor-pointer`}
+                            className="nav-link"
+                            style={{
+                                background: "none", border: "none", color: textColor,
+                                fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: 14, padding: 0
+                            }}
                         >
                             {item.text}
-                        </motion.button>
+                        </button>
                     ))}
-                </motion.div>
-            )}
-        </AnimatePresence>
-    </motion.nav>
-}
+                </div>
+
+                {/* Right side */}
+                <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <button
+                        onClick={() => toggleDarkMode(isDarkMode ? "light" : "dark")}
+                        style={{
+                            background: isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)",
+                            border: "none", borderRadius: "50%", width: 38, height: 38,
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            cursor: "none", color: textColor, transition: "all 0.2s"
+                        }}
+                    >
+                        {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                    </button>
+
+                    {/* Mobile hamburger */}
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="md:hidden"
+                        style={{
+                            background: isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)",
+                            border: "none", borderRadius: "50%", width: 38, height: 38,
+                            display: "none", alignItems: "center", justifyContent: "center",
+                            cursor: "none", color: textColor
+                        }}
+                    >
+                        {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("contact")}
+                        className="btn-primary"
+                        style={{ padding: "10px 22px", fontSize: 12 }}
+                    >
+                        Contato
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        style={{
+                            marginTop: 12, padding: 20, borderRadius: 16,
+                            background: isDarkMode ? "#1f2937" : "#ffffff",
+                            border: `1px solid ${borderColor}`
+                        }}
+                    >
+                        {menuItems.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => scrollToSection(item.id)}
+                                style={{
+                                    display: "block", width: "100%", textAlign: "left",
+                                    padding: "10px 0", background: "none", border: "none",
+                                    color: textColor, fontFamily: "'DM Sans', sans-serif",
+                                    fontSize: 14, fontWeight: 500, cursor: "none",
+                                    borderBottom: `1px solid ${borderColor}`
+                                }}
+                            >
+                                {item.text}
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </nav>
+    );
+};
 
 export default Navbar;
