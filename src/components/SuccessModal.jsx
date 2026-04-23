@@ -1,79 +1,184 @@
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useRef } from "react";
 import { CheckCircle, X, Sparkles } from "lucide-react";
 
 const SuccessModal = ({ showSuccess, setShowSuccess, isDarkMode }) => {
-  
-    return <AnimatePresence>
-        {showSuccess && (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0  }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-                onClick={() => setShowSuccess(false)}
+    const overlayRef = useRef(null);
+    const cardRef    = useRef(null);
+    const iconRef    = useRef(null);
+
+    // ── Theme tokens ────────────────────────────────────────────────
+    const bg         = isDarkMode ? "#111827"              : "#ffffff";
+    const text       = isDarkMode ? "#f9fafb"              : "#111827";
+    const sub        = isDarkMode ? "#9ca3af"              : "#6b7280";
+    const cardBorder = isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+
+    // ── Animate-in on open ──────────────────────────────────────────
+    useEffect(() => {
+        if (!showSuccess) return;
+
+        const overlay = overlayRef.current;
+        const card    = cardRef.current;
+        const icon    = iconRef.current;
+        if (!overlay || !card || !icon) return;
+
+        // Reset
+        overlay.style.opacity = "0";
+        card.style.opacity    = "0";
+        card.style.transform  = "scale(0.88) translateY(20px)";
+        icon.style.transform  = "scale(0)";
+
+        // Overlay fade-in
+        requestAnimationFrame(() => {
+            overlay.style.transition = "opacity 0.25s ease";
+            overlay.style.opacity    = "1";
+
+            // Card spring-in (slight delay)
+            setTimeout(() => {
+                card.style.transition = "opacity 0.35s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1)";
+                card.style.opacity    = "1";
+                card.style.transform  = "scale(1) translateY(0)";
+            }, 60);
+
+            // Icon pop-in
+            setTimeout(() => {
+                icon.style.transition = "transform 0.45s cubic-bezier(0.34,1.56,0.64,1)";
+                icon.style.transform  = "scale(1)";
+            }, 200);
+        });
+    }, [showSuccess]);
+
+    const handleClose = () => {
+        const overlay = overlayRef.current;
+        const card    = cardRef.current;
+        if (!overlay || !card) return;
+
+        card.style.transition = "opacity 0.2s ease, transform 0.2s ease";
+        card.style.opacity    = "0";
+        card.style.transform  = "scale(0.92) translateY(12px)";
+
+        overlay.style.transition = "opacity 0.3s ease";
+        overlay.style.opacity    = "0";
+
+        setTimeout(() => setShowSuccess(false), 300);
+    };
+
+    if (!showSuccess) return null;
+
+    return (
+        <>
+            {/* Keyframes */}
+            <style>{`
+                @keyframes sparkle-spin {
+                    0%   { transform: rotate(0deg)   scale(1);    opacity: 0.8; }
+                    50%  { transform: rotate(180deg) scale(1.15); opacity: 1;   }
+                    100% { transform: rotate(360deg) scale(1);    opacity: 0.8; }
+                }
+            `}</style>
+
+            {/* Backdrop */}
+            <div
+                ref={overlayRef}
+                onClick={handleClose}
+                style={{
+                    position: "fixed", inset: 0, zIndex: 9999,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    padding: 24,
+                    background: "rgba(0,0,0,0.55)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                }}
             >
-                <motion.div 
-                    initial={{ scale: 0.8, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.8, opacity: 0, y: 20 }}
-                    transition={{ type: "spring", duration: 0.5 }}
-                    className={`relative p-8 rounded-2xl border max-w-sm w-full text-center ${
-                        isDarkMode
-                            ? "bg-gray-800 border-gray-700"
-                            : "bg-white border-gray-200"
-                    }`}
+                {/* Card */}
+                <div
+                    ref={cardRef}
                     onClick={(e) => e.stopPropagation()}
+                    style={{
+                        position: "relative",
+                        width: "100%", maxWidth: 400,
+                        background: bg,
+                        border: `1px solid ${cardBorder}`,
+                        borderRadius: 24,
+                        padding: "48px 40px 40px",
+                        textAlign: "center",
+                        boxShadow: isDarkMode
+                            ? "0 32px 80px rgba(0,0,0,0.6)"
+                            : "0 32px 80px rgba(0,0,0,0.14)",
+                    }}
                 >
+                    {/* Close button */}
                     <button
-                        onClick={() => setShowSuccess(false)}
-                        className={`absolute top-4 right-4 p-1 rounded-full transition-colors ${
-                            isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                        }`}
+                        onClick={handleClose}
+                        style={{
+                            position: "absolute", top: 16, right: 16,
+                            width: 32, height: 32, borderRadius: "50%",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            border: `1px solid ${cardBorder}`,
+                            background: "transparent", cursor: "pointer",
+                            color: sub, transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "var(--accent)";
+                            e.currentTarget.style.color      = "white";
+                            e.currentTarget.style.borderColor = "var(--accent)";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background  = "transparent";
+                            e.currentTarget.style.color       = sub;
+                            e.currentTarget.style.borderColor = cardBorder;
+                        }}
                     >
-                        <X size={18} />
+                        <X size={15} />
                     </button>
 
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring" }}
-                        className="mx-auto w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-6"
+                    {/* Check icon */}
+                    <div
+                        ref={iconRef}
+                        style={{
+                            width: 72, height: 72, borderRadius: "50%",
+                            background: "linear-gradient(135deg, var(--accent), #22c55e)",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            margin: "0 auto 28px",
+                            boxShadow: "0 0 40px rgba(34,197,94,0.25)",
+                        }}
                     >
-                        <CheckCircle size={32} className="text-white" />
-                    </motion.div>
+                        <CheckCircle size={36} style={{ color: "white" }} />
+                    </div>
 
-                    <motion.h3
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-2xl font-medium mb-2"
-                    >
+                    {/* Title */}
+                    <h3 style={{
+                        fontFamily: "'Syne', sans-serif",
+                        fontSize: 24, fontWeight: 700,
+                        color: text, marginBottom: 12,
+                        letterSpacing: "-0.01em",
+                    }}>
                         Mensagem enviada!
-                    </motion.h3>
+                    </h3>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className={` ${
-                            isDarkMode ? "text-gray-400" : "text-gray-600"
-                            } mb-6`}
-                    >
-                        Obrigado por entrar em contato! Entrarei em contato com você em até 24 horas.
-                    </motion.p>
+                    {/* Body */}
+                    <p style={{
+                        fontSize: 15, lineHeight: 1.7,
+                        color: sub, fontWeight: 300,
+                        fontFamily: "'DM Sans', sans-serif",
+                        marginBottom: 32,
+                    }}>
+                        Obrigado por entrar em contato! Entrarei em contato com você em até{" "}
+                        <span style={{ color: "var(--accent)", fontWeight: 500 }}>24 horas</span>.
+                    </p>
 
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="flex justify-center"
-                    >
-                        <Sparkles className="text-yellow-500" size={24} />
-                    </motion.div>
-                </motion.div>
-            </motion.div>
-        )}
-    </AnimatePresence>
+                    {/* Sparkles */}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <Sparkles
+                            size={22}
+                            style={{
+                                color: "var(--accent)",
+                                animation: "sparkle-spin 3s linear infinite",
+                            }}
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default SuccessModal;
