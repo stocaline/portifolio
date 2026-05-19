@@ -13,7 +13,7 @@ const TESTIMONIALS = [
     {
         id: 1,
         name: "Erick Gabriel de Paula",
-        role: "CTO · Portobello",
+        role: "Analista TI · Portobello",
         avatar: AVATAR_1,
         comment:
             "O Richard foi fundamental na minha transição de carreira. Quando eu estava perdido tentando conseguir minha primeira oportunidade, ele não só me deu as dicas técnicas certas, como me ajudou a entender o que as empresas realmente buscavam. Se hoje sou desenvolvedor, é porque tive o apoio de alguém que realmente sabe ensinar e quer ver os outros crescerem.",
@@ -34,7 +34,7 @@ const TESTIMONIALS = [
         role: "Tech Lead · Innoscience",
         avatar: AVATAR_3,
         comment:
-            "Mesmo como estagiário, Richard demonstrou maturidade técnica e iniciativa acima da média. Hoje, ao ver sua evolução como engenheiro de software, fico orgulhoso de ter sido parte dessa jornada.",
+            "Trabalhar com o Richard na Innoscience tem sido uma experiência excelente. O ambiente de inovação corporativa exige muita agilidade e a habilidade de transformar incertezas em soluções tecnológicas viáveis, e ele domina isso com maestria. Além de sua sólida competência técnica, o que realmente diferencia o Richard é a sua postura consultiva e sua resiliência diante de desafios complexos. Ele não apenas entrega código de alta qualidade, mas entende o impacto de negócio por trás de cada projeto. É um profissional de extrema confiança, colaborativo e que eleva o nível de qualquer equipe.",
         accent: "#22c55e",
     },
 ];
