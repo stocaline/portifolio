@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Desenvolvimento e evolução da Empregoou</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C2E30;
+    --deep:#0F3D36;
+    --green:#0E7A50;
+    --lime:#4FD16B;
+    --paper:#EFF3F0;
+    --card:#FFFFFF;
+    --line:#D2DFD8;
+    --muted:#5F7A76;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:16px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:40px 24px 90px;}
+
+  h1,h2,h3{font-family:"Bricolage Grotesque","Instrument Sans",sans-serif;line-height:1.1;margin:0;letter-spacing:-0.02em;}
+  h1{font-size:clamp(30px,5.2vw,46px);font-weight:800;}
+  h2{font-size:clamp(23px,3.4vw,30px);font-weight:600;}
+  h3{font-size:19px;font-weight:600;letter-spacing:-0.01em;}
+  p{margin:0 0 14px;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 10px;
+  }
+
+  /* ---------- hero: cartão de vaga ---------- */
+  .posting{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:30px 30px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .posting::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--lime);
+  }
+  .posting-top{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:18px;
+  }
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);display:inline-block;}
+  .posting h1{margin-bottom:8px;}
+  .posting .sub{color:var(--muted);font-size:17px;margin-bottom:22px;max-width:62ch;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    border:1px solid var(--line);border-radius:100px;padding:5px 12px;color:var(--muted);
+  }
+  .meta{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .meta div{background:var(--card);padding:14px 16px;}
+  .meta dt{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+  .meta dd{margin:0;font-weight:600;font-size:15px;}
+
+  /* ---------- seções ---------- */
+  section{margin-top:56px;}
+  .lead{font-size:17.5px;color:#2A4644;max-width:66ch;}
+
+  /* frentes de trabalho */
+  .frente{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;margin-bottom:16px;
+  }
+  .frente-head{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:6px;}
+  .est{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--green);
+    background:#E5F3EA;border-radius:100px;padding:5px 12px;white-space:nowrap;
+  }
+  .frente > p{color:#304B48;font-size:15.5px;}
+  ul.check{list-style:none;padding:0;margin:14px 0 0;}
+  ul.check li{position:relative;padding-left:22px;margin-bottom:9px;font-size:15px;color:#304B48;}
+  ul.check li::before{
+    content:"";position:absolute;left:0;top:9px;width:9px;height:2px;background:var(--lime);
+  }
+  .nota{font-size:14px;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+
+  /* destaque do fluxo do e-mail */
+  .flow{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:20px;
+  }
+  .flow div{background:#F7FAF8;padding:16px;}
+  .flow .n{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+  .flow p{margin:0;font-size:14.5px;color:#304B48;}
+
+  /* preço */
+  .pricing{background:var(--ink);color:#EFF3F0;border-radius:var(--radius);padding:32px 30px;}
+  .pricing .eyebrow{color:#88A8A2;}
+  .pricing h2{color:#fff;margin-bottom:10px;}
+  .pricing p{color:#B4C9C4;}
+  .rate{display:flex;align-items:baseline;gap:10px;margin:22px 0 6px;flex-wrap:wrap;}
+  .rate .num{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(42px,8vw,62px);font-weight:800;color:var(--lime);letter-spacing:-0.03em;line-height:1;}
+  .rate .unit{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#88A8A2;}
+  .packs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:#27494A;border-radius:10px;overflow:hidden;margin-top:26px;}
+  .pack{background:#173B3C;padding:18px;}
+  .pack .name{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#88A8A2;margin-bottom:8px;}
+  .pack .val{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;font-weight:600;color:#fff;letter-spacing:-0.02em;}
+  .pack .per{font-size:13.5px;color:#88A8A2;margin-top:4px;}
+  .compare{margin-top:26px;background:#173B3C;border-radius:10px;padding:20px;border-left:4px solid var(--lime);}
+  .compare p{margin:0;font-size:15px;color:#D3E4DF;}
+  .compare strong{color:#fff;}
+
+  /* passos */
+  ol.steps{list-style:none;counter-reset:s;padding:0;margin:24px 0 0;}
+  ol.steps li{counter-increment:s;position:relative;padding-left:44px;margin-bottom:18px;font-size:15.5px;color:#304B48;}
+  ol.steps li::before{
+    content:counter(s,decimal-leading-zero);
+    position:absolute;left:0;top:1px;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--green);
+    border:1px solid var(--line);border-radius:6px;padding:3px 7px;background:var(--card);
+  }
+  ol.steps strong{color:var(--ink);}
+
+  footer{
+    margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
+  }
+
+  @media (max-width:600px){
+    .wrap{padding:26px 16px 60px;}
+    .posting{padding:24px 20px 22px;}
+    .frente{padding:20px;}
+    .pricing{padding:24px 20px;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .posting,.frente,.pricing{animation:rise .5s ease-out both;}
+    @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  }
+  @media print{
+    body{background:#fff;}
+    .wrap{padding:0;max-width:none;}
+    .frente,.posting{break-inside:avoid;}
+    .pricing{background:#0C2E30 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    section{margin-top:34px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="posting">
+    <div class="posting-top">
+      <span class="dot"></span>
+      <span>Proposta comercial</span>
+      <span>·</span>
+      <span>Empregoou</span>
+      <span>·</span>
+      <span>Agosto de 2026</span>
+    </div>
+    <h1>Um desenvolvedor para a Empregoou,<br>por hora e sem surpresa no orçamento</h1>
+    <p class="sub">Manutenção e evolução da plataforma em Bubble, com escopo estimado antes de cada entrega — e um caminho claro até a versão mais robusta do produto.</p>
+    <div class="tags">
+      <span class="tag">Bubble</span>
+      <span class="tag">Integrações e APIs</span>
+      <span class="tag">Automação com IA</span>
+      <span class="tag">Next.js</span>
+      <span class="tag">Remoto</span>
+    </div>
+    <dl class="meta">
+      <div><dt>Para</dt><dd>Matheus · Empregoou</dd></div>
+      <div><dt>De</dt><dd>Richard</dd></div>
+      <div><dt>Modelo</dt><dd>Horas de desenvolvimento</dd></div>
+      <div><dt>Início</dt><dd>Imediato</dd></div>
+    </dl>
+  </div>
+
+  <!-- COMO EU TRABALHO -->
+  <section>
+    <p class="eyebrow">Como eu trabalho</p>
+    <h2>Você compra horas, não incerteza</h2>
+    <p class="lead">A Empregoou já tem o essencial de pé: empresas publicando, candidatura em um clique e inscrição automática em vagas parecidas. O que eu trago é ritmo de evolução com custo previsível.</p>
+    <ul class="check" style="margin-top:18px">
+      <li><strong>Estimativa antes de executar.</strong> Toda demanda recebe uma faixa de horas antes de começar. Se eu passar da faixa por erro meu, a diferença é minha.</li>
+      <li><strong>Relatório de horas.</strong> Você recebe o registro do que foi feito e em quanto tempo. Nada de caixa-preta.</li>
+      <li><strong>Documentação enquanto trabalho.</strong> Cada área que eu toco fica mapeada. O projeto vai ficando mais fácil de manter, não menos.</li>
+      <li><strong>Entrega em blocos curtos.</strong> Cada bloco vai para produção funcionando antes de o próximo começar. Você vê resultado toda semana.</li>
+      <li><strong>Sem dependência de mim.</strong> Tudo fica no seu Bubble, na sua conta, com a documentação junto. Você não fica preso a um fornecedor.</li>
+      <li><strong>Prioridade sua.</strong> Você decide a ordem da fila; eu digo o custo em horas de cada item.</li>
+    </ul>
+  </section>
+
+  <!-- FRENTE 1 -->
+  <section>
+    <p class="eyebrow">Frente 1 · Primeira entrega</p>
+    <h2>Aviso automático de novos candidatos para a empresa</h2>
+    <p class="lead">A empresa publica a vaga e some. Enquanto isso, os currículos chegam e ninguém avisa. O e-mail periódico de novos candidatos resolve exatamente isso: a empresa recebe o número, vê que a plataforma está trabalhando por ela e volta para olhar.</p>
+
+    <div class="flow">
+      <div><div class="n">Empresa publica</div><p>A vaga entra no ar e passa a acumular candidaturas.</p></div>
+      <div><div class="n">Plataforma conta</div><p>A cada período, o sistema apura quantos candidatos novos entraram desde o último aviso.</p></div>
+      <div><div class="n">E-mail sai</div><p>Um e-mail só, com todas as vagas ativas da empresa e o número de cada uma.</p></div>
+      <div><div class="n">Empresa volta</div><p>Um clique leva direto para a lista de candidatos daquela vaga.</p></div>
+    </div>
+
+    <div class="frente" style="margin-top:24px">
+      <div class="frente-head">
+        <h3>Base de envio</h3>
+        <span class="est">4 – 6 h</span>
+      </div>
+      <p>Estrutura para que este e qualquer e-mail futuro custe minutos, não horas.</p>
+      <ul class="check">
+        <li>Provedor de envio configurado com domínio autenticado (SPF, DKIM e DMARC) — sem isso os e-mails caem em spam e o aviso não cumpre a função</li>
+        <li>Modelos reutilizáveis com a identidade da Empregoou</li>
+        <li>Registro de envios e controle de descadastro, alinhado à LGPD</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Aviso de novos candidatos</h3>
+        <span class="est">8 – 12 h</span>
+      </div>
+      <p>O e-mail em si, com as regras que fazem ele ser lido e não virar ruído.</p>
+      <ul class="check">
+        <li>Contagem de candidatos novos por vaga desde o último envio, não o total acumulado</li>
+        <li>Todas as vagas ativas da empresa em um único e-mail, com botão direto para cada lista</li>
+        <li>Frequência configurável — diária, a cada dois dias ou semanal — definida por você ou pela própria empresa</li>
+        <li>Sem candidato novo, sem e-mail: a caixa de entrada da empresa não recebe mensagem vazia</li>
+        <li>Vaga com zero candidatos há muito tempo entra em um aviso diferente, sugerindo revisar título, descrição ou faixa salarial</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Medição do resultado</h3>
+        <span class="est">3 – 4 h</span>
+      </div>
+      <p>Sem número, não dá para saber se o aviso está trazendo a empresa de volta. Com a base já montada, isso custa pouco e vale muito.</p>
+      <ul class="check">
+        <li>Taxa de abertura e de clique por envio</li>
+        <li>Quantas empresas voltaram à plataforma depois do e-mail</li>
+        <li>Ajuste da frequência com base no que os números mostrarem</li>
+      </ul>
+      <p class="nota">Estimativa total da Frente 1: <strong>15 a 22 horas</strong>. A base de envio fica pronta primeiro, o aviso entra em produção logo em seguida e a medição acompanha as primeiras semanas.</p>
+    </div>
+  </section>
+
+  <!-- FRENTE 2 -->
+  <section>
+    <p class="eyebrow">Frente 2 · Evolução do produto</p>
+    <h2>Onde a Empregoou pode ganhar vantagem</h2>
+    <p class="lead">Nada aqui é obrigatório. É o mapa do que dá para construir, para você escolher a ordem conforme o negócio pedir.</p>
+
+    <div class="frente" style="margin-top:24px">
+      <div class="frente-head">
+        <h3>Resto da régua de comunicação</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Com a base de envio já em pé, cada novo aviso é barato. Do lado do candidato, é o que faz ele voltar sem custo de mídia.</p>
+      <ul class="check">
+        <li>Confirmação de candidatura, mostrando também as vagas parecidas em que ele foi inscrito automaticamente</li>
+        <li>Aviso quando uma empresa seguida publica vaga nova</li>
+        <li>Resumo semanal de vagas compatíveis com o perfil</li>
+        <li>Retorno de candidatos parados há semanas, com vagas novas do interesse dele</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Matching real entre candidato e vaga</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Hoje a inscrição automática usa semelhança declarada entre vagas. Com análise semântica do currículo e da descrição, ela passa a acertar de verdade — e a plataforma ganha uma nota de compatibilidade que serve para os dois lados.</p>
+      <ul class="check">
+        <li>Nota de aderência exibida ao candidato e à empresa</li>
+        <li>Candidatura automática guiada por essa nota, com limite configurável</li>
+        <li>Feed de vagas recomendadas na home do candidato</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Triagem automática de candidatos</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>O maior gargalo de quem contrata é ler cem currículos. A plataforma passa a entregar a lista já ordenada, com um parecer curto justificando cada posição — e o e-mail de novos candidatos passa a mostrar os melhores, não só a quantidade.</p>
+      <ul class="check">
+        <li>Leitura do currículo em PDF e extração de experiência, formação e habilidades</li>
+        <li>Ranking dos candidatos por vaga, com resumo de pontos fortes e lacunas</li>
+        <li>Perguntas de corte definidas pela empresa, avaliadas automaticamente</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Entrevista registrada e transcrita</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Entrevista gravada dentro da plataforma vira texto transcrito e resumo estruturado por competência. A empresa compara candidatos lendo, não reassistindo.</p>
+      <ul class="check">
+        <li>Entrevista assíncrona: a empresa manda as perguntas, o candidato responde quando puder</li>
+        <li>Transcrição automática com resumo e pontos de atenção</li>
+        <li>Histórico anexado à candidatura</li>
+      </ul>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Painel de acompanhamento da empresa</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Etapas do processo em quadro visual, com métricas por vaga: visualizações, candidaturas, tempo até o preenchimento. É o destino natural do clique que vem do e-mail de novos candidatos.</p>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Publicação de vaga assistida</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>A empresa escreve em texto livre o que precisa e recebe a vaga já estruturada: título, descrição, requisitos e faixa sugerida. Menos atrito na publicação significa mais vagas no ar.</p>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Aviso por WhatsApp</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>No Brasil o WhatsApp é lido, o e-mail nem sempre. Os mesmos avisos passam a sair também por mensagem, com a preferência escolhida por quem recebe.</p>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Planos e monetização</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Estrutura para a plataforma cobrar: planos por empresa, limite de vagas ativas, destaque pago e cobrança recorrente integrada.</p>
+      <p class="nota">Cada item destes recebe escopo e faixa de horas fechada no momento em que entrar na fila. Cravar número agora seria chute: o formato de cada um ainda vai mudar conforme a plataforma crescer.</p>
+    </div>
+  </section>
+
+  <!-- FRENTE 3 -->
+  <section>
+    <p class="eyebrow">Frente 3 · Base técnica</p>
+    <h2>O caminho até a versão robusta, sem parar a operação</h2>
+    <p class="lead">Você mencionou o interesse em migrar para Next no futuro. A forma cara de fazer isso é reescrever tudo de uma vez. A forma segura é trocar por partes, com a plataforma no ar o tempo todo.</p>
+
+    <div class="frente" style="margin-top:24px">
+      <div class="frente-head">
+        <h3>Passo 1 · Mapeamento do que existe</h3>
+        <span class="est">A planejar</span>
+      </div>
+      <p>Levantamento da estrutura de dados e dos fluxos do Bubble, com registro do que está duplicado, do que está sem uso e do que é frágil. Esse documento é seu e serve para qualquer desenvolvedor que entrar depois.</p>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Passo 2 · Lógica pesada fora do Bubble</h3>
+        <span class="est">sob demanda</span>
+      </div>
+      <p>Matching, leitura de currículo e transcrição rodam melhor em serviço próprio, chamado pelo Bubble via API. Vantagem dupla: a plataforma fica mais rápida agora e essa parte já nasce pronta para a versão em Next — não vai ser jogada fora.</p>
+    </div>
+
+    <div class="frente">
+      <div class="frente-head">
+        <h3>Passo 3 · Migração por telas</h3>
+        <span class="est">projeto à parte</span>
+      </div>
+      <p>Com os dados e a lógica já do lado de fora, a migração vira a troca de uma tela por vez, começando pelas de maior tráfego. Sem congelamento de produto, sem virada de chave arriscada.</p>
+      <p class="nota">Faz sentido decidir isso quando a receita justificar. Enquanto isso, cada entrega das Frentes 1 e 2 já é feita pensando nesse destino.</p>
+    </div>
+  </section>
+
+  <!-- INVESTIMENTO -->
+  <section>
+    <div class="pricing">
+      <p class="eyebrow">Investimento</p>
+      <h2>Valor por hora</h2>
+      <div class="rate">
+        <span class="num">R$ 160</span>
+        <span class="unit">por hora · demanda avulsa</span>
+      </div>
+      <p>Cobrança por hora efetivamente trabalhada, com relatório do que foi entregue. Pacotes contratados antecipadamente saem mais barato e garantem prioridade na agenda.</p>
+
+      <div class="packs">
+        <div class="pack">
+          <div class="name">Pacote 10 h</div>
+          <div class="val">R$ 1.500</div>
+          <div class="per">R$ 150 por hora</div>
+        </div>
+        <div class="pack">
+          <div class="name">Pacote 20 h</div>
+          <div class="val">R$ 2.800</div>
+          <div class="per">R$ 140 por hora</div>
+        </div>
+        <div class="pack">
+          <div class="name">Mensal · 30 h</div>
+          <div class="val">R$ 3.900</div>
+          <div class="per">R$ 130 por hora · prioridade máxima</div>
+        </div>
+      </div>
+
+      <div class="compare">
+        <p><strong>Na prática:</strong> a Frente 1 completa — base de envio, aviso de novos candidatos e medição — cabe em um pacote de 20 horas. Cada ajuste pequeno depois disso custa o tempo que levar, normalmente entre uma e três horas.</p>
+      </div>
+
+      <p style="margin-top:22px;font-size:14px;color:#88A8A2">Horas de pacote valem por 90 dias. Pagamento contra nota fiscal, com o pacote quitado no início e o avulso fechado ao fim de cada mês.</p>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASSOS -->
+  <section>
+    <p class="eyebrow">Como começamos</p>
+    <h2>Primeira semana</h2>
+    <ol class="steps">
+      <li><strong>Acesso ao Bubble e ao domínio.</strong> Você me dá acesso de colaborador e ao provedor de domínio para a configuração de e-mail.</li>
+      <li><strong>Mapeamento inicial.</strong> Eu abro a estrutura atual e volto com as faixas de horas fechadas para a Frente 1.</li>
+      <li><strong>Primeiro bloco em produção.</strong> Base de envio funcionando e o aviso de novos candidatos saindo para as primeiras empresas, para você ver o modelo de trabalho antes de contratar volume maior.</li>
+      <li><strong>Fila de prioridades.</strong> A partir daí, você escolhe o próximo item e eu digo quanto custa em horas.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Richard · Desenvolvimento e automação</span>
+    <span>Proposta válida por 30 dias</span>
+  </footer>
+
+</div>
+</body>
+</html>
