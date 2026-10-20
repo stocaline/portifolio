@@ -27,3 +27,5 @@ dist-ssr
 ## AI
 .agents/
 skills-lock.json
+.taste-skill/
+.env
